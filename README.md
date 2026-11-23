@@ -12,7 +12,7 @@ FasterMC Dungeons [MMORPG] Minecraft sunucusunun resmi launcher'ı (Windows, .NE
 ## Kod imzalama
 
 Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
-Ayrıntılar: [CODE_SIGNING.md](CODE_SIGNING.md)
+Ayrıntılar: [CODE_SIGNING.md](CODE_SIGNING.md) · Gizlilik politikası: https://firewing.store/fmc/gizlilik/
 
 ## Derleme
 

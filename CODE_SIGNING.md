@@ -22,7 +22,12 @@ Depoya yazma yetkisi olan herkes iki aşamalı doğrulama (2FA) kullanır. Her i
 
 ## Gizlilik / Privacy
 
-This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it.
+Privacy policy / Gizlilik politikası: **https://firewing.store/fmc/gizlilik/**
 
-Bu program, kullanıcı ya da onu kuran / çalıştıran kişi açıkça istemedikçe başka ağ sistemlerine hiçbir bilgi aktarmaz.
-Launcher yalnızca oyunun kurulumu, güncellenmesi ve hesap girişi için `firewing.store` ile iletişim kurar ve modları CurseForge'dan indirir.
+The launcher communicates with `firewing.store` for account login, game installation and updates, downloads mods from
+CurseForge / Modrinth / Forge, and sends an automatic security report (username, device ID, reason) if it detects that its
+own files were tampered with. All collected data and third parties are listed in the privacy policy.
+
+Launcher; hesap girişi, oyun kurulumu ve güncellemeler için `firewing.store` ile iletişim kurar, modları CurseForge / Modrinth / Forge'dan
+indirir ve kendi dosyalarına müdahale tespit ederse otomatik güvenlik bildirimi (kullanıcı adı, cihaz kimliği, neden) gönderir.
+Toplanan tüm veriler ve üçüncü taraflar gizlilik politikasında listelenmiştir.
