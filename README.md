@@ -25,4 +25,4 @@ Gizli değerler (CurseForge API anahtarı, harita adresi) depoda **yoktur**. Ken
 
 ## Lisans
 
-[MIT](LICENSE) © 2026 FasterMC
+[MIT](LICENSE) © 2020-2026 Ametio (AhmetYasir61). FasterMC bu launcher'ı sahibinin izniyle kullanır.
