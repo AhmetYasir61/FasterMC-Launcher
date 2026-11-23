@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FasterMC Launcher — İndir</title>
+<meta name="description" content="FasterMC Dungeons [MMORPG] resmi launcher'ı. Açık kaynak (MIT), SignPath Vakfı ile kod imzalı.">
+<style>
+  :root { --zemin:#0d0b09; --kart:#17130f; --kenar:#3a2a14; --altin:#ffb347; --turuncu:#e8731a; --yazi:#f2ebe1; --soluk:#a89a88; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Segoe UI", system-ui, sans-serif; background: radial-gradient(ellipse at top, #2a1a0a 0%, var(--zemin) 60%); color: var(--yazi); min-height: 100vh; }
+  .kap { max-width: 860px; margin: 0 auto; padding: 48px 16px 64px; }
+  header { display:flex; align-items:center; gap:16px; }
+  header img { width:72px; height:72px; border-radius:16px; }
+  h1 { margin:0; font-size: 34px; letter-spacing:.5px; }
+  h1 span { color: var(--altin); }
+  .alt { color: var(--soluk); margin-top:4px; }
+  .indir { margin: 32px 0; padding: 28px; border:1px solid var(--kenar); border-radius: 20px; background: linear-gradient(180deg, #1c160f, var(--kart)); }
+  .tus { display:inline-flex; align-items:center; gap:10px; padding: 16px 28px; border-radius: 14px; font-weight:700; font-size:18px;
+         color:#1e1302; text-decoration:none; background: linear-gradient(135deg, var(--altin), var(--turuncu)); box-shadow: 0 8px 28px #e8731a55; }
+  .tus:hover { filter: brightness(1.08); }
+  .bilgi { color: var(--soluk); font-size: 14px; margin-top: 14px; line-height: 1.6; }
+  code { background:#000a; padding:2px 6px; border-radius:6px; font-size:13px; word-break: break-all; }
+  h2 { color: var(--altin); font-size: 20px; margin-top: 36px; }
+  .kutu { border:1px solid var(--kenar); border-radius: 16px; padding: 18px 20px; background: var(--kart); line-height:1.65; }
+  .imza { border-color: #e8731a; }
+  a { color: var(--altin); }
+  ul { padding-left: 20px; margin: 8px 0; }
+  footer { margin-top: 48px; color: var(--soluk); font-size: 13px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="kap">
+  <header>
+    <img src="../../favicon.ico" onerror="this.style.display='none'" alt="">
+    <div>
+      <h1>FasterMC <span>Launcher</span></h1>
+      <div class="alt">FasterMC Dungeons [MMORPG] — resmi Windows launcher'ı</div>
+    </div>
+  </header>
+
+  <section class="indir">
+    <a class="tus" href="FasterMCLauncher.exe" id="tus">⬇ Windows için indir</a>
+    <div class="bilgi">
+      Sürüm <b id="surum">5.0.1</b> · Windows 10/11 (64 bit) · en az 6 GB RAM<br>
+      SHA-256: <code id="sha">yükleniyor…</code><br>
+      İlk açılışta kendini <code>%AppData%\FasterMCLauncher</code> klasörüne kurar, masaüstüne kısayol ekler.
+      Windows <i>Ayarlar → Uygulamalar → Yüklü uygulamalar</i> bölümünden kaldırılabilir veya onarılabilir.
+    </div>
+  </section>
+
+  <h2>Kod imzalama</h2>
+  <div class="kutu imza">
+    <b>Free code signing provided by <a href="https://signpath.io">SignPath.io</a>, certificate by <a href="https://signpath.org">SignPath Foundation</a>.</b><br>
+    Ücretsiz kod imzalama <a href="https://signpath.io">SignPath.io</a> tarafından sağlanır, sertifika <a href="https://signpath.org">SignPath Vakfı</a>'na aittir.
+    İmzalı sürümler yalnızca bu projenin herkese açık kaynak kodundan, GitHub Actions üzerinde otomatik olarak derlenir.
+  </div>
+
+  <h2>Açık kaynak</h2>
+  <div class="kutu">
+    Kaynak kod: <a href="https://github.com/AhmetYasir61/FasterMC-Launcher">github.com/AhmetYasir61/FasterMC-Launcher</a><br>
+    Lisans: <a href="https://github.com/AhmetYasir61/FasterMC-Launcher/blob/main/LICENSE">MIT</a> © 2026 FasterMC<br>
+    Kod imzalama politikası: <a href="https://github.com/AhmetYasir61/FasterMC-Launcher/blob/main/CODE_SIGNING.md">CODE_SIGNING.md</a>
+  </div>
+
+  <h2>Gizlilik</h2>
+  <div class="kutu">
+    Bu program, giriş yaptığınız FasterMC hesabı ile oyun kurulumu ve güncellemeleri için <code>firewing.store</code> sunucusuyla iletişim kurar;
+    modları CurseForge'dan indirir. Kullanıcı açıkça istemedikçe başka hiçbir sisteme bilgi aktarmaz.
+  </div>
+
+  <footer>© 2026 FasterMC · <a href="https://firewing.store">firewing.store</a></footer>
+</div>
+<script>
+fetch('../launcher.json?t=' + Date.now()).then(r => r.json()).then(j => {
+  document.getElementById('surum').textContent = j.surum;
+  document.getElementById('sha').textContent = j.sha256 || '-';
+}).catch(() => { document.getElementById('sha').textContent = '-'; });
+</script>
+</body>
+</html>

@@ -7,7 +7,12 @@ FasterMC Dungeons [MMORPG] Minecraft sunucusunun resmi launcher'ı (Windows, .NE
 - `%AppData%\FasterMCLauncher` altına kurulur; Windows "Yüklü uygulamalar"dan kaldırılabilir / onarılabilir
 - Tek kopya çalışır
 
-**İndir:** https://firewing.store/fmc/indir/FasterMCLauncher.exe
+**İndir:** https://firewing.store/fmc/indir/
+
+## Kod imzalama
+
+Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+Ayrıntılar: [CODE_SIGNING.md](CODE_SIGNING.md)
 
 ## Derleme
 
