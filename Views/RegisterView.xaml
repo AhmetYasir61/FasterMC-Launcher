@@ -1,0 +1,44 @@
+<UserControl x:Class="FWLauncherV2.Views.RegisterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <StackPanel>
+        <Border x:Name="ErrorBox" Visibility="Collapsed"
+                Background="#1AEF8C44" BorderBrush="#55EF8C44" BorderThickness="1"
+                CornerRadius="12" Padding="14,10" Margin="0,0,0,12">
+            <TextBlock x:Name="TxtErrorMessage" Foreground="{StaticResource DangerBrush}"
+                       TextWrapping="Wrap" FontSize="13" FontWeight="SemiBold"/>
+        </Border>
+
+        <TextBlock Text="Takma ad" FontSize="14.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+        <TextBox x:Name="TxtUsername" Style="{StaticResource DarkTextBox}" Height="48" Margin="0,0,0,12"/>
+
+        <TextBlock Text="E-posta" FontSize="14.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+        <TextBox x:Name="TxtEmail" Style="{StaticResource DarkTextBox}" Height="48" Margin="0,0,0,12"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="Şifre" FontSize="14.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                <PasswordBox x:Name="TxtPassword" Style="{StaticResource DarkPasswordBox}" Height="48"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Şifre (tekrar)" FontSize="14.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                <PasswordBox x:Name="TxtPasswordConfirm" Style="{StaticResource DarkPasswordBox}" Height="48"/>
+            </StackPanel>
+        </Grid>
+
+        <Button x:Name="BtnRegister" Content="KAYIT OL" Height="58" FontSize="17" Margin="0,20,0,0"
+                Style="{StaticResource PrimaryButton}" Click="BtnRegister_Click"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,18,0,0">
+            <TextBlock Text="Zaten hesabın var mı?" FontSize="15.5" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+            <Button Content="Giriş yap" Style="{StaticResource LinkButton}" Foreground="#FFFCDB65" FontSize="15.5" Margin="6,0,0,0" Click="LoginButton_Click"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

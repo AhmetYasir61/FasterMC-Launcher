@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+# gizli degerler (CurseForge anahtari, harita adresi) — ASLA commit etme
+Gizli/Gizli.local.cs
+*.pfx
+*.p12

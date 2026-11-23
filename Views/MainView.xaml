@@ -1,0 +1,253 @@
+﻿<UserControl x:Class="FWLauncherV2.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition x:Name="NewsRow" Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ===================== HERO ===================== -->
+        <Grid Grid.Row="0" ClipToBounds="False">
+            <!-- Anka görseli: sağda, sola ve alta doğru solar -->
+            <Image Visibility="Collapsed" Source="/Assets/Images/phoenix.jpg" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Width="780" Margin="0,-6,-26,0" RenderOptions.BitmapScalingMode="HighQuality" IsHitTestVisible="False">
+                <Image.OpacityMask>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#00000000" Offset="0"/>
+                        <GradientStop Color="#99000000" Offset="0.35"/>
+                        <GradientStop Color="#FF000000" Offset="0.7"/>
+                    </LinearGradientBrush>
+                </Image.OpacityMask>
+            </Image>
+            <Rectangle Visibility="Collapsed" IsHitTestVisible="False" VerticalAlignment="Bottom" Height="160">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#000E0D0D" Offset="0"/>
+                        <GradientStop Color="#FF0E0D0D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Grid Margin="0,6,0,6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="TxtWelcome" Text="Hoş geldin!" Foreground="{DynamicResource PageAccentBrush}"
+                           FontSize="15" FontWeight="SemiBold" Margin="4,0,0,8"/>
+
+                <!-- ===================== PAKET KARTLARI ===================== -->
+                <Grid Grid.Row="1">
+                    <ScrollViewer x:Name="KartScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="KartScroll_PreviewMouseWheel" Margin="0,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                        <ItemsControl x:Name="KartList">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="310" Margin="0,0,20,0" CornerRadius="22" ClipToBounds="True"
+                                            BorderBrush="#33FFB347" BorderThickness="1">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding Arkaplan}" Stretch="UniformToFill" Opacity="0.35"/>
+                                        </Border.Background>
+                                        <Border CornerRadius="22" Background="#B3121110" Padding="16">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <!-- oyun ici gorseller (dongu) -->
+                                                <Border Grid.Row="0" CornerRadius="16" MinHeight="180" BorderBrush="#22FFFFFF" BorderThickness="1">
+                                                    <Border.Background>
+                                                        <ImageBrush ImageSource="{Binding Gorsel}" Stretch="UniformToFill"/>
+                                                    </Border.Background>
+                                                </Border>
+                                                <Button Grid.Row="0" Content="&#xE70F;" FontFamily="{StaticResource IconFont}" Style="{StaticResource IconSquareButton}"
+                                                        Width="34" Height="34" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,8,0"
+                                                        Visibility="{Binding DuzenleGorunur}" Click="PaketDuzenle_Click" ToolTip="Paketi düzenle (owner)"/>
+                                                <Viewbox Grid.Row="1" StretchDirection="DownOnly" HorizontalAlignment="Center" Margin="0,16,0,0" MaxHeight="28">
+                                                    <TextBlock Text="{Binding Ad}" FontSize="19" FontWeight="SemiBold" Foreground="White"/>
+                                                </Viewbox>
+                                                <TextBlock Grid.Row="2" Text="{Binding Surum}" FontSize="13" Foreground="{StaticResource TextMutedBrush}"
+                                                           Margin="0,4,0,0" HorizontalAlignment="Center"/>
+                                                <Button Grid.Row="3" Content="{Binding Buton}" IsEnabled="{Binding Aktif}" Height="52" Margin="0,14,0,0"
+                                                        FontSize="17" Style="{StaticResource PrimaryButton}" Click="KartButon_Click"/>
+                                                <!-- bu paketin durumu: ilerleme, durum yazisi, sunucu -->
+                                                <StackPanel Grid.Row="4" Margin="2,12,2,0">
+                                                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Ilerleme, Mode=OneWay}" Height="6"
+                                                                 Style="{StaticResource FWProgressBar}" Visibility="{Binding IlerlemeGorunur}"/>
+                                                    <Viewbox StretchDirection="DownOnly" HorizontalAlignment="Center" Margin="0,6,0,0" MaxHeight="18">
+                                                        <TextBlock Text="{Binding Durum}" FontSize="12.5" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                    </Viewbox>
+                                                    <Viewbox StretchDirection="DownOnly" HorizontalAlignment="Center" Margin="0,4,0,0" MaxHeight="17">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Width="8" Height="8" Fill="{Binding SunucuRenk}" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding Sunucu}" FontSize="12" Margin="7,0,0,0" Foreground="{StaticResource TextMutedBrush}"/>
+                                                        </StackPanel>
+                                                    </Viewbox>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!-- owner: yeni paket karti -->
+                        <Button x:Name="BtnYeniPaket" Width="310" Margin="0,0,20,0" Cursor="Hand" Visibility="Collapsed"
+                                Click="YeniPaket_Click" ToolTip="Yeni oyun paketi ekle (herkes için yayınlanır)">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="b" CornerRadius="22" Background="#59121110" BorderBrush="#66FFB347"
+                                            BorderThickness="2" >
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Text="+" FontSize="120" FontWeight="Light" Foreground="{StaticResource AccentBrush}"
+                                                       HorizontalAlignment="Center" Margin="0,-20,0,0"/>
+                                            <TextBlock Text="Yeni paket" FontSize="16" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="b" Property="Background" Value="#80201B14"/>
+                                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Button Content="&#xE76B;" FontFamily="{StaticResource IconFont}" Style="{StaticResource IconSquareButton}" Width="40" Height="40"
+                            FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-14,0,0,0" Click="KartSol_Click" ToolTip="Önceki"/>
+                    <Button Content="&#xE76C;" FontFamily="{StaticResource IconFont}" Style="{StaticResource IconSquareButton}" Width="40" Height="40"
+                            FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,6,0" Click="KartSag_Click" ToolTip="Sonraki"/>
+                </Grid>
+
+                <!-- ilerleme + sunucu durumu -->
+                <StackPanel Grid.Row="2" Margin="2,14,0,0" MaxWidth="560" HorizontalAlignment="Left" MinWidth="360" Visibility="Collapsed">
+                    <ProgressBar x:Name="ProgressBar" Minimum="0" Maximum="100" Value="0" Height="9"
+                                     Style="{StaticResource FWProgressBar}"/>
+                        <TextBlock x:Name="LblStatus" Text="Hazır" FontSize="15" Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,10,0,0" TextTrimming="CharacterEllipsis"/>
+                        <!-- Sunucu durumu -->
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Ellipse x:Name="ServerDot" Width="9" Height="9" Fill="{StaticResource TextMutedBrush}" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtServerStatus" Text="Sunucu durumu kontrol ediliyor..." Margin="8,0,0,0"
+                                       FontSize="13" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock x:Name="TxtServerIp" Text="" Margin="10,0,0,0" FontSize="13" Foreground="{StaticResource TextMutedBrush}"/>
+                        </StackPanel>
+                </StackPanel>
+
+                <!-- eski kontroller: kod bunlari kullanmaya devam eder, gorunmez -->
+                <StackPanel Visibility="Collapsed">
+                    <ComboBox x:Name="CmbPack" MinWidth="200" MaxWidth="280" Margin="0,0,12,10" Visibility="Collapsed"
+                              ToolTip="Sürüm / paket seç" SelectionChanged="CmbPack_SelectionChanged"/>
+                    <StackPanel x:Name="BadgesPanel" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Border Style="{StaticResource Pill}" Background="#2A22211F" BorderBrush="#33FFFFFF" BorderThickness="1">
+                            <TextBlock Style="{StaticResource PixelText}" FontSize="15">
+                                <Run Text="Sürüm:"/> <Run x:Name="TxtVersionBadge" Text="—"/>
+                            </TextBlock>
+                        </Border>
+                        <Border Style="{StaticResource Pill}" Background="#2A22211F" BorderBrush="#33FFFFFF" BorderThickness="1" Margin="12,0,0,0">
+                            <TextBlock x:Name="TxtModsBadge" Text="Mod: —" Style="{StaticResource PixelText}" FontSize="15"/>
+                        </Border>
+                        <Border Style="{StaticResource Pill}" Background="#2A22211F" BorderBrush="#33FFFFFF" BorderThickness="1" Margin="12,0,0,0">
+                            <TextBlock x:Name="TxtLoaderBadge" Text="NeoForge" Style="{StaticResource PixelText}" FontSize="15"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock x:Name="TxtPackName" Text="Yükleniyor..." FontSize="13" Foreground="{StaticResource TextMutedBrush}" Margin="2,2,0,0"/>
+                    <TextBlock x:Name="TxtDescription" TextWrapping="Wrap" MaxWidth="640" HorizontalAlignment="Left" FontSize="16"
+                           Foreground="{StaticResource TextSecondaryBrush}" Margin="2,6,0,16" LineHeight="23"
+                           Text="Keşfet, fethet, yüksel. Tek tıkla sunucuya bağlan; modların, gölgelendiricilerin ve kaynak paketlerin hazır."/>
+                    <Button x:Name="BtnPlay" Width="300" Height="76" Content="OYNA" Style="{StaticResource PlayButton}"
+                            FontFamily="{StaticResource PixelFont}" FontSize="30" Click="BtnPlay_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Data="M0,0 L14,9 L0,18 Z" Fill="White" VerticalAlignment="Center" Margin="0,0,18,4"/>
+                                    <TextBlock Text="{Binding}" FontFamily="{StaticResource PixelFont}" Foreground="White"
+                                               TextOptions.TextRenderingMode="Aliased" Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                    <Button x:Name="BtnUpdate" Width="84" Height="76" Margin="18,0,0,0" Content="KUR"
+                            Style="{StaticResource SecondaryButton}" Background="#FF1D1C1B" Click="BtnUpdate_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="&#xE72C;" FontFamily="{StaticResource IconFont}" FontSize="22" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding}" FontSize="11.5" Margin="0,6,0,0" HorizontalAlignment="Center"
+                                               Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="80"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- ===================== HABER ŞERİDİ ===================== -->
+        <Border x:Name="NewsStrip" Grid.Row="1" Height="236" Visibility="Collapsed" CornerRadius="30" Background="#C0191817"
+                BorderBrush="#FF272523" BorderThickness="1" Margin="0,8,0,0">
+            <Grid>
+                <ScrollViewer x:Name="NewsScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"
+                              PreviewMouseWheel="NewsScroll_PreviewMouseWheel" Margin="24,20,24,10">
+                    <ItemsControl x:Name="NewsList">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="280" Margin="0,0,20,0" Cursor="Hand" Tag="{Binding Ad}" Click="News_Click"
+                                        Background="Transparent" BorderThickness="0">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <StackPanel x:Name="sp" Background="Transparent">
+                                                <Border Height="112" CornerRadius="18" Background="{Binding Brush}" ClipToBounds="True"
+                                                        BorderBrush="#22FFFFFF" BorderThickness="1">
+                                                    <Grid>
+                                                        <Image Source="{Binding Image}" Stretch="UniformToFill" Visibility="{Binding ImageVisibility}"/>
+                                                        <Border Visibility="{Binding Ad.BadgeVisibility}" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                                Margin="12" CornerRadius="10" Background="#B30E0D0D" Padding="10,4">
+                                                            <TextBlock Text="{Binding Ad.Badge}" Style="{StaticResource PixelText}" FontSize="11"
+                                                                       Foreground="#FFFCD06A"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+                                                <TextBlock Text="{Binding Ad.Title}" FontSize="18" FontWeight="SemiBold" Foreground="White"
+                                                           Margin="2,12,0,0" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Ad.Description}" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}"
+                                                           Margin="2,6,0,0" TextWrapping="Wrap" MaxHeight="42" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="sp" Property="Opacity" Value="0.85"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <TextBlock x:Name="TxtNoNews" Text="Henüz haber veya duyuru yok." Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="{StaticResource TextMutedBrush}"/>
+                <Button Content="&#xE76C;" FontFamily="{StaticResource IconFont}" Style="{StaticResource IconSquareButton}" Width="40" Height="40"
+                        FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,40" Click="NewsNext_Click"
+                        ToolTip="Diğer haberler"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

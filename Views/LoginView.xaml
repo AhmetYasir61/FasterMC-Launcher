@@ -1,0 +1,52 @@
+<UserControl x:Class="FWLauncherV2.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <StackPanel>
+        <!-- ERROR -->
+        <Border x:Name="ErrorBox" Visibility="Collapsed"
+                Background="#1AEF8C44" BorderBrush="#55EF8C44" BorderThickness="1"
+                CornerRadius="12" Padding="14,10" Margin="0,0,0,16">
+            <TextBlock x:Name="TxtErrorMessage" Foreground="{StaticResource DangerBrush}"
+                       TextWrapping="Wrap" FontSize="13" FontWeight="SemiBold"/>
+        </Border>
+
+        <TextBlock Text="Takma ad" FontSize="16" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,10"/>
+        <Grid Margin="0,0,0,20">
+            <TextBox x:Name="TxtUsername" Style="{StaticResource DarkTextBox}" Height="60" KeyDown="Field_KeyDown"/>
+            <TextBlock Text="Oyundaki adın" IsHitTestVisible="False" Margin="20,0,0,0" VerticalAlignment="Center" FontSize="15"
+                       Foreground="{StaticResource TextMutedBrush}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=TxtUsername}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+
+        <TextBlock Text="Şifre" FontSize="16" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,10"/>
+        <Grid Margin="0,0,0,8">
+            <PasswordBox x:Name="TxtPassword" Style="{StaticResource DarkPasswordBox}" Height="60" KeyDown="Field_KeyDown"
+                         PasswordChanged="Password_Changed"/>
+            <TextBox x:Name="TxtPasswordPlain" Style="{StaticResource DarkTextBox}" Height="60" Visibility="Collapsed" KeyDown="Field_KeyDown"
+                     TextChanged="PasswordPlain_Changed"/>
+            <Button x:Name="BtnShowPass" Content="&#xE890;" FontFamily="{StaticResource IconFont}" Style="{StaticResource ChromeButton}"
+                    HorizontalAlignment="Right" Margin="0,0,10,0" ToolTip="Şifreyi göster / gizle" Click="ShowPass_Click"/>
+        </Grid>
+        <TextBlock x:Name="TxtCaps" Text="Caps Lock açık" Visibility="Collapsed" FontSize="12.5" Foreground="#FFFCD06A" Margin="4,0,0,0"/>
+
+        <Button x:Name="BtnLogin" Content="GİRİŞ YAP" Height="62" FontSize="18" Margin="0,24,0,0"
+                Style="{StaticResource PrimaryButton}" Click="BtnLogin_Click"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
+            <TextBlock Text="Hesabın yok mu?" FontSize="15.5" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+            <Button Content="Kayıt ol" Style="{StaticResource LinkButton}" Foreground="#FFFCDB65" FontSize="15.5" Margin="6,0,0,0" Click="RegisterButton_Click"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

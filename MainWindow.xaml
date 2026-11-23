@@ -1,0 +1,300 @@
+<Window x:Class="FWLauncherV2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:FWLauncherV2.Views"
+        Title="FasterMC Launcher"
+        Width="1320"
+        Height="830"
+        MinWidth="1180"
+        MinHeight="720"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanMinimize"
+        AllowsTransparency="True"
+        StateChanged="Window_StateChanged"
+        Background="Transparent">
+
+    <Border x:Name="RootBorder" Margin="16" CornerRadius="0" Background="{StaticResource WindowBackdrop}">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="40" ShadowDepth="0" Color="#000000" Opacity="0.65"/>
+        </Border.Effect>
+
+        <Border x:Name="InnerBorder" CornerRadius="0" BorderBrush="#FF262523" BorderThickness="1" ClipToBounds="True">
+            <Grid>
+                <!-- Sayfa rengi parıltısı (sağ üst) + alt mor ton -->
+                <Rectangle Fill="{DynamicResource PageGlowBrush}" IsHitTestVisible="False"/>
+                <Rectangle IsHitTestVisible="False">
+                    <Rectangle.Fill>
+                        <RadialGradientBrush Center="0.05,1" GradientOrigin="0.05,1" RadiusX="0.6" RadiusY="0.6">
+                            <GradientStop Color="#22F79834" Offset="0"/>
+                            <GradientStop Color="#00F79834" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="104"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="26"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Arka plan: ust cubugun altindan en alta, yan menu dahil tum genislik (kesintisiz) -->
+                    <Image Grid.Row="1" Source="/Assets/Images/phoenix.jpg" Stretch="UniformToFill" Opacity="0.6"
+                           RenderOptions.BitmapScalingMode="HighQuality" IsHitTestVisible="False"/>
+                    <Rectangle Grid.Row="1" IsHitTestVisible="False">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#B3070707" Offset="0"/>
+                                <GradientStop Color="#66070707" Offset="0.45"/>
+                                <GradientStop Color="#1A070707" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+
+                    <!-- ===================== ÜST ÇUBUK ===================== -->
+                    <Grid Grid.Row="0" Background="Transparent" MouseDown="TitleBar_MouseDown">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Column="0" Source="/Assets/Images/logo_full.png" Width="82" Height="70" Margin="26,0,0,0"
+                               RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center" Cursor="Hand"
+                               MouseLeftButtonUp="Logo_Click" ToolTip="FasterMC Dungeons [MMORPG]">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="22" ShadowDepth="0" Color="#FFFF862E" Opacity="0.55"/>
+                            </Image.Effect>
+                        </Image>
+
+                        <TextBlock x:Name="TxtClock" Grid.Column="1" Text="00:00" FontSize="27" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="26,0,34,0" Foreground="White"/>
+
+                        <!-- Oyuncu sayısı -->
+                        <Grid Grid.Column="2" Width="230" VerticalAlignment="Center" ToolTip="Sunucudaki çevrimiçi oyuncular (canlı)">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- Çevrimiçi / kapasite: tek satır, aynı piksel font ve ortak taban çizgisi -->
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Style="{StaticResource PixelText}" Foreground="White" VerticalAlignment="Center">
+                                    <Run x:Name="TxtPlayers" Text="—" FontSize="20"/><Run x:Name="TxtMaxPlayers" Text="" FontSize="20"
+                                         Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </TextBlock>
+                                <TextBlock x:Name="TxtPlayersCaption" Text="sunucu kontrol ediliyor" VerticalAlignment="Center"
+                                           Foreground="{StaticResource TextSecondaryBrush}" FontSize="12.5" Margin="10,2,0,0"/>
+                            </StackPanel>
+                            <ProgressBar x:Name="PlayersBar" Grid.Row="1" Height="7" Margin="0,4,0,0" Minimum="0" Maximum="100" Value="0"
+                                         Style="{StaticResource FWProgressBar}"/>
+                        </Grid>
+
+                        <!-- Hızlı bağlantılar -->
+                        <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource IconSquareButton}" Content="&#xE8F2;" Foreground="#FFFCE287"
+                                    ToolTip="Discord" Click="Discord_Click"/>
+                            <Button Style="{StaticResource IconSquareButton}" Content="&#xE774;" Foreground="#FFEACF5E" Margin="14,0"
+                                    ToolTip="Web sitesi" Click="Website_Click"/>
+                            <Button Style="{StaticResource IconSquareButton}" Content="&#xE768;" Foreground="#FFFBAB71"
+                                    ToolTip="YouTube" Click="Youtube_Click"/>
+                        </StackPanel>
+
+                        <!-- Kullanıcı -->
+                        <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center" Cursor="Hand"
+                                    MouseLeftButtonUp="UserChip_Click" ToolTip="Hesabım">
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                                <TextBlock HorizontalAlignment="Right" FontSize="14.5" Foreground="{StaticResource TextSecondaryBrush}">
+                                    <Run Text="Rütbe:"/>
+                                    <Run x:Name="RunRank" Text="Oyuncu" Foreground="#FFDEC24A"/>
+                                </TextBlock>
+                                <TextBlock x:Name="TxtSidebarUser" Text="Oyuncu" HorizontalAlignment="Right" FontSize="21" FontWeight="Bold"
+                                           Foreground="White" MaxWidth="220" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                            <Border Width="64" Height="64" CornerRadius="16" Background="{DynamicResource PageGradientD}"
+                                    BorderBrush="#33FFFFFF" BorderThickness="1">
+                                <Grid>
+                                    <TextBlock x:Name="TxtUserInitial" Text="O" Style="{StaticResource PixelText}" FontSize="26" Foreground="#FF191817"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0"/>
+                                    <!-- Oyuncu kafası: kutuyu doldurur, köşeler yuvarlatılır -->
+                                    <Border Margin="5">
+                                        <Border.OpacityMask>
+                                            <VisualBrush>
+                                                <VisualBrush.Visual>
+                                                    <Border Width="54" Height="54" CornerRadius="11" Background="Black"/>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Border.OpacityMask>
+                                        <Image x:Name="ImgAvatarHead" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="NearestNeighbor" Visibility="Collapsed"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="7" Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0,20,0">
+                            <Button Content="&#x2012;" FontSize="16" Style="{StaticResource ChromeButton}" Click="MinimizeButton_Click"/>
+                            <Button x:Name="BtnMaximize" Visibility="Collapsed" Content="&#x25A1;" FontSize="15" Style="{StaticResource ChromeButton}"
+                                    ToolTip="Tam ekran / Geri al" Click="MaximizeButton_Click"/>
+                            <Button Content="&#x2715;" Style="{StaticResource ChromeCloseButton}" Click="CloseButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- ===================== GÖVDE ===================== -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- İKON RAYI -->
+                        <Border Grid.Column="0" Width="88" Margin="20,0,0,12" CornerRadius="22" Background="#80100F0E"
+                                BorderBrush="#FF272523" BorderThickness="1">
+                            <Grid Margin="0,12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <Button x:Name="NavHome" Style="{StaticResource RailItem}" Click="NavHome_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE7FC;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Oyna" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavAccount" Style="{StaticResource RailItem}" Click="NavAccount_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE77B;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Hesap" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavMods" Style="{StaticResource RailItem}" Click="NavMods_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE7B8;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Modlar" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavStore" Style="{StaticResource RailItem}" Click="NavStore_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE719;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Mağaza" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavReklam" Style="{StaticResource RailItem}" Click="NavReklam_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Haberler" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavMap" Style="{StaticResource RailItem}" Click="NavMap_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE707;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Harita" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavDestek" Style="{StaticResource RailItem}" Click="NavDestek_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE897;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Destek" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button x:Name="NavSettings" Style="{StaticResource RailItem}" Click="NavSettings_Click">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xE713;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Ayarlar" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <!-- Yalnızca owner/admin için görünür -->
+                                        <Button x:Name="NavAdmin" Style="{StaticResource RailItem}" Click="NavAdmin_Click" Visibility="Collapsed">
+                                            <StackPanel>
+                                                <TextBlock Text="&#xEA18;" FontFamily="{StaticResource IconFont}" FontSize="16" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Panel" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </ScrollViewer>
+
+                                <Button x:Name="BtnLogout" Grid.Row="1" Style="{StaticResource RailItem}" Click="BtnLogout_Click" ToolTip="Çıkış yap">
+                                    <StackPanel>
+                                        <TextBlock Text="&#xE7E8;" FontFamily="{StaticResource IconFont}" FontSize="16" HorizontalAlignment="Center"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                        <TextBlock Text="Çıkış" Margin="0,4,0,0" HorizontalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <!-- İÇERİK: Oyna sayfası hep canlı kalır (kurulum/oyun süreci sayfa değişince kesilmesin) -->
+                        <Grid Grid.Column="1" Margin="28,0,26,24">
+                            <views:MainView x:Name="PlayCard"/>
+                            <ContentControl x:Name="CenterContent" Visibility="Collapsed"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                        </Grid>
+                    </Grid>
+
+                    <!-- Guncelleme baloncugu: yalniz launcher / modpaketi guncellemesi gelince sag alttan cikar -->
+                    <Grid x:Name="GuncelleBalon" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                          Margin="0,0,22,12" Cursor="Hand" MouseLeftButtonUp="GuncelleBalon_Click">
+                        <Grid.RenderTransform><TranslateTransform x:Name="BalonKay" X="0" Y="0"/></Grid.RenderTransform>
+                        <Grid.Effect><DropShadowEffect BlurRadius="22" ShadowDepth="0" Opacity="0.55" Color="#FFFF8A1A"/></Grid.Effect>
+                        <StackPanel>
+                            <Border CornerRadius="16" Padding="16,11" BorderThickness="1" BorderBrush="#88FFE0A0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#F2FFB347" Offset="0"/>
+                                        <GradientStop Color="#F2E8731A" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="TxtBalonIkon" Text="⟳" FontSize="20" Foreground="#FF1E1302" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtBalon" Text="Güncelleme var" FontWeight="Bold" FontSize="13" Foreground="#FF1E1302"/>
+                                        <TextBlock x:Name="TxtBalonAlt" Text="Yenilemek için tıkla" FontSize="11" Foreground="#CC1E1302"/>
+                                    </StackPanel>
+                                    <Border Margin="14,0,0,0" CornerRadius="10" Background="#FF1E1302" Padding="12,6" VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtBalonTus" Text="YENİLE" FontWeight="Bold" FontSize="11" Foreground="#FFFFC870"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                            <!-- konusma balonu kuyrugu (sag alta) -->
+                            <Path Data="M0,0 L18,0 L18,12 Z" HorizontalAlignment="Right" Margin="0,-1,22,0" Fill="#F2E8731A"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Bildirim (toast) -->
+                    <Border x:Name="Toast" Grid.Row="1" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                            Margin="0,0,44,44" CornerRadius="16" Background="#F2201F1D" BorderBrush="{DynamicResource PageStrokeBrush}"
+                            BorderThickness="1" Padding="20,14" MaxWidth="440" IsHitTestVisible="False">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.5"/>
+                        </Border.Effect>
+                        <TextBlock x:Name="TxtToast" Text="" TextWrapping="Wrap" FontSize="14" Foreground="White"/>
+                    </Border>
+
+                    <!-- ===================== MODERASYON KİLİT EKRANI ===================== -->
+                    <Border x:Name="ModOverlay" Grid.RowSpan="2" Visibility="Collapsed" Background="#F40E0D0D">
+                        <Border Style="{StaticResource Card}" Width="540" Padding="44" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock x:Name="TxtModIcon" Text="⛔" FontSize="60" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="TxtModTitle" Text="Hesabın yasaklandı" Style="{StaticResource PixelText}" FontSize="24"
+                                           HorizontalAlignment="Center" TextAlignment="Center" Margin="0,16,0,0"/>
+                                <TextBlock x:Name="TxtModMsg" Text="" Style="{StaticResource Caption}" FontSize="14"
+                                           HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="0,10,0,0" MaxWidth="440"/>
+                                <TextBlock x:Name="TxtModTimer" Text="" Foreground="{StaticResource AccentAmberBrush}" FontSize="24" FontWeight="Bold"
+                                           HorizontalAlignment="Center" Margin="0,18,0,0"/>
+                                <Button Content="Çıkış yap" Width="160" Height="42" Margin="0,22,0,0" Style="{StaticResource SecondaryButton}"
+                                        Click="BtnLogout_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</Window>

@@ -1,0 +1,252 @@
+<UserControl x:Class="FWLauncherV2.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <UserControl.Resources>
+        <Style x:Key="Row" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#FF2E2C2A"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="0,20"/>
+        </Style>
+        <Style x:Key="RowTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="RowDesc" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14.5"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="Margin" Value="0,6,0,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="RowInput" TargetType="TextBox" BasedOn="{StaticResource DarkTextBox}">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="FolderBtn" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="0,0,12,12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Border CornerRadius="30" Background="#C0191817" BorderBrush="#FF272523" BorderThickness="1">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ALT MENÜ -->
+            <Border BorderBrush="#FF272523" BorderThickness="0,0,1,0">
+                <Grid Margin="22,30,22,24">
+                    <StackPanel>
+                        <Button x:Name="TabLook" Style="{StaticResource SubNavItem}" Click="Tab_Click" CommandParameter="0">
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE790;" FontFamily="{StaticResource IconFont}" Margin="0,2,12,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Text="Görünüm" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></StackPanel>
+                        </Button>
+                        <Button x:Name="TabWindow" Style="{StaticResource SubNavItem}" Tag="active" Click="Tab_Click" CommandParameter="1">
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7F4;" FontFamily="{StaticResource IconFont}" Margin="0,2,12,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Text="Pencere" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></StackPanel>
+                        </Button>
+                        <Button x:Name="TabJava" Style="{StaticResource SubNavItem}" Click="Tab_Click" CommandParameter="2">
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE950;" FontFamily="{StaticResource IconFont}" Margin="0,2,12,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Text="Java ve Bellek" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></StackPanel>
+                        </Button>
+                        <Button x:Name="TabMods" Style="{StaticResource SubNavItem}" Click="Tab_Click" CommandParameter="3">
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7B8;" FontFamily="{StaticResource IconFont}" Margin="0,2,12,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Text="Modlar" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></StackPanel>
+                        </Button>
+                        <Button x:Name="TabFiles" Style="{StaticResource SubNavItem}" Click="Tab_Click" CommandParameter="4">
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE8B7;" FontFamily="{StaticResource IconFont}" Margin="0,2,12,0" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Text="Dosyalar" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                        <Image Source="/Assets/Images/logo_full.png" Width="40" Opacity="0.7" VerticalAlignment="Center"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock x:Name="TxtAppVersion" Text="FasterMC Launcher" FontSize="13" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock x:Name="TxtOsVersion" Text="" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- İÇERİK -->
+            <Grid Grid.Column="1" Margin="44,24,44,26">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Ayarlar" Style="{StaticResource PixelTitle}"/>
+                    <TextBlock Text="İstemciyi ve launcher'ı istediğin gibi ayarla." Style="{StaticResource PageSubtitle}"/>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <Grid Margin="0,0,14,0">
+                        <!-- ===== GÖRÜNÜM ===== -->
+                        <StackPanel x:Name="PanelLook" Visibility="Collapsed">
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Sayfa renkleri" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Her sayfa kendi rengini taşısın (Oyna turuncu, Hesap turkuaz, Modlar mor...). Kapalıysa tek renk kullanılır." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkPageColors" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Ana sayfada haber şeridi" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyna sayfasının altında son duyurular gösterilsin." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkNewsStrip" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== PENCERE ===== -->
+                        <StackPanel x:Name="PanelWindow">
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Tam ekran" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyunu tam ekran modunda başlat (options.txt ile)." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkFullScreen" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,320,0"><TextBlock Text="Genişlik" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyun penceresinin açılış genişliği." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <TextBox x:Name="TxtWidth" Style="{StaticResource RowInput}" HorizontalAlignment="Right" TextChanged="Changed_Text"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,320,0"><TextBlock Text="Yükseklik" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyun penceresinin açılış yüksekliği." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <TextBox x:Name="TxtHeight" Style="{StaticResource RowInput}" HorizontalAlignment="Right" TextChanged="Changed_Text"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Oyun açıkken launcher'ı gizle" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyun açılınca launcher arka planda gizlenir (görev çubuğunda da görünmez)." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkMinimize" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Oyun kapanınca launcher'ı geri getir" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyundan çıkınca launcher gizlilikten çıkıp otomatik öne gelir." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkRestore" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== JAVA VE BELLEK ===== -->
+                        <StackPanel x:Name="PanelJava" Visibility="Collapsed">
+                            <Border Style="{StaticResource Row}">
+                                <StackPanel>
+                                    <TextBlock Text="Java yolu (java.exe)" Style="{StaticResource RowTitle}"/>
+                                    <TextBlock Text="Minecraft 1.21.x için Java 21 gerekir. Boş bırakırsan launcher sistemde otomatik arar." Style="{StaticResource RowDesc}"/>
+                                    <Grid Margin="0,14,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="TxtJavaPath" Style="{StaticResource DarkTextBox}" IsReadOnly="True" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <Button Grid.Column="1" Content="Gözat" Height="52" Margin="12,0,0,0" Style="{StaticResource SecondaryButton}" Click="BtnSelectJava_Click"/>
+                                        <Button Grid.Column="2" Content="Otomatik bul" Height="52" Margin="12,0,0,0" Style="{StaticResource SecondaryButton}" Click="AutoJava_Click"/>
+                                    </Grid>
+                                    <TextBlock Margin="0,12,0,0" FontSize="13.5">
+                                        <Hyperlink NavigateUri="https://download.oracle.com/java/21/archive/jdk-21.0.9_windows-x64_bin.exe"
+                                                   RequestNavigate="JavaLink_RequestNavigate" Foreground="{DynamicResource PageAccentBrush}" TextDecorations="None">
+                                            Java 21'i buradan indir →
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <StackPanel>
+                                    <Grid>
+                                        <TextBlock Text="Ayrılan bellek (RAM)" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock x:Name="TxtRamValue" Text="4 GB" HorizontalAlignment="Right" Style="{StaticResource PixelText}" FontSize="20"
+                                                   Foreground="{DynamicResource PageAccentBrush}"/>
+                                    </Grid>
+                                    <TextBlock x:Name="TxtRamHint" Text="İpucu: toplam RAM'inin yarısından fazlasını ayırma." Style="{StaticResource RowDesc}"/>
+                                    <Slider x:Name="RamSlider" Minimum="4" Maximum="16" TickFrequency="1" IsSnapToTickEnabled="True" Style="{StaticResource FWSlider}"
+                                            ValueChanged="RamSlider_ValueChanged" Margin="0,18,0,12"/>
+                                    <ProgressBar x:Name="RamUsageBar" Minimum="0" Maximum="100" Style="{StaticResource FWProgressBar}" Height="8"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <StackPanel>
+                                    <TextBlock Text="Ek JVM bayrakları" Style="{StaticResource RowTitle}"/>
+                                    <TextBlock Text="İleri düzey: boşlukla ayır (ör. -XX:+UseStringDeduplication). Yalnız '-' ile başlayanlar uygulanır." Style="{StaticResource RowDesc}"/>
+                                    <TextBox x:Name="TxtJvmArgs" Style="{StaticResource DarkTextBox}" Margin="0,14,0,0" TextChanged="Changed_Text"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== MODLAR ===== -->
+                        <StackPanel x:Name="PanelMods" Visibility="Collapsed">
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Kullanıcı modları" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="usermods/ klasöründeki açık modlar başlatmada ana pakete eklensin. Aynı mod ID'si ana pakette varsa ana paket kazanır." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkUserMods" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <Grid>
+                                    <StackPanel Margin="0,0,90,0"><TextBlock Text="Çökme yardımcısı" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="Oyun hata koduyla kapanırsa çökme raporunu / son günlüğü açmayı öner." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <CheckBox x:Name="ChkCrash" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Changed_Click"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource Row}">
+                                <StackPanel>
+                                    <TextBlock Text="CurseForge API anahtarı" Style="{StaticResource RowTitle}"/>
+                                    <TextBlock Text="Modrinth anahtarsız çalışır. CurseForge araması hata verirse console.curseforge.com'dan aldığın anahtarı buraya gir; boşsa launcher'ın anahtarı kullanılır." Style="{StaticResource RowDesc}"/>
+                                    <TextBox x:Name="TxtCurseKey" Style="{StaticResource DarkTextBox}" Margin="0,14,0,0" TextChanged="Changed_Text"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== DOSYALAR ===== -->
+                        <StackPanel x:Name="PanelFiles" Visibility="Collapsed">
+                            <TextBlock Text="Klasörler" Style="{StaticResource RowTitle}" Margin="0,8,0,4"/>
+                            <TextBlock Text="Seçili paketin oyun klasörleri ve launcher verileri." Style="{StaticResource RowDesc}" Margin="0,0,0,16"/>
+                            <WrapPanel>
+                                <Button Content="📁  Launcher klasörü" Style="{StaticResource FolderBtn}" Tag="root" Click="Folder_Click"/>
+                                <Button Content="📁  Oyun klasörü" Style="{StaticResource FolderBtn}" Tag="game" Click="Folder_Click"/>
+                                <Button Content="📦  mods (ana paket)" Style="{StaticResource FolderBtn}" Tag="mods" Click="Folder_Click"/>
+                                <Button Content="🧩  usermods" Style="{StaticResource FolderBtn}" Tag="usermods" Click="Folder_Click"/>
+                                <Button Content="✨  shaderpacks" Style="{StaticResource FolderBtn}" Tag="shaderpacks" Click="Folder_Click"/>
+                                <Button Content="🎨  resourcepacks" Style="{StaticResource FolderBtn}" Tag="resourcepacks" Click="Folder_Click"/>
+                                <Button Content="📷  Ekran görüntüleri" Style="{StaticResource FolderBtn}" Tag="screenshots" Click="Folder_Click"/>
+                                <Button Content="📜  Oyun günlükleri" Style="{StaticResource FolderBtn}" Tag="logs" Click="Folder_Click"/>
+                                <Button Content="🧾  Launcher günlükleri" Style="{StaticResource FolderBtn}" Tag="launcherlogs" Click="Folder_Click"/>
+                                <Button Content="💥  Çökme raporları" Style="{StaticResource FolderBtn}" Tag="crash" Click="Folder_Click"/>
+                            </WrapPanel>
+                            <Border Style="{StaticResource Row}" BorderThickness="0,1,0,0" Margin="0,12,0,0">
+                                <Grid>
+                                    <StackPanel Margin="0,0,220,0"><TextBlock Text="Önbellek" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock x:Name="TxtCacheSize" Text="Mağaza indirmeleri ve harita önbelleği." Style="{StaticResource RowDesc}"/></StackPanel>
+                                    <Button Content="Önbelleği temizle" HorizontalAlignment="Right" VerticalAlignment="Center" Height="46"
+                                            Style="{StaticResource DangerButton}" Click="ClearCache_Click"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+
+                <Grid Grid.Row="2" Margin="0,16,0,0">
+                    <TextBlock x:Name="TxtDirty" Text="Kaydedilmemiş değişiklik var" Visibility="Collapsed" VerticalAlignment="Center"
+                               Foreground="#FFFCD06A" FontSize="14"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Geri al" Height="50" Style="{StaticResource SecondaryButton}" Click="Revert_Click" Margin="0,0,12,0"/>
+                        <Button Content="Ayarları Kaydet" Height="50" Padding="28,0" Style="{StaticResource PrimaryButton}" Click="BtnSave_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

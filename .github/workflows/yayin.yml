@@ -1,0 +1,40 @@
+# Resmi derleme + SignPath ile kod imzalama (SignPath Foundation onayindan sonra etkin).
+name: yayin
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+jobs:
+  derle:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: "10.0.x" }
+      - name: Gizli degerler (GitHub Secrets)
+        shell: pwsh
+        run: |
+          @"
+          namespace FWLauncherV2 { internal static partial class Gizli {
+            public const string CurseForgeApiKey = "${{ secrets.CURSEFORGE_API_KEY }}";
+            public const string HaritaUrl = "${{ secrets.HARITA_URL }}";
+          } }
+          "@ | Set-Content Gizli/Gizli.local.cs
+      - run: dotnet publish -c Release -p:PublishProfile=win-x64-single
+      - id: yukle
+        uses: actions/upload-artifact@v4
+        with: { name: imzasiz, path: bin/Publish/FasterMCLauncher.exe }
+      - name: SignPath ile imzala
+        if: ${{ vars.SIGNPATH_ORG_ID != '' }}
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORG_ID }}
+          project-slug: fastermc-launcher
+          signing-policy-slug: release-signing
+          github-artifact-id: ${{ steps.yukle.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: imzali
+      - uses: actions/upload-artifact@v4
+        if: ${{ vars.SIGNPATH_ORG_ID != '' }}
+        with: { name: FasterMCLauncher-imzali, path: imzali/ }

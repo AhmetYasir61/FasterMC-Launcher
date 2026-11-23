@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- Windows 10 SDK projeksiyonu: harita için WebView2CompositionControl bunu ister. En düşük sürüm Win10 1809. -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <!-- Sistem tepsisi simgesi (NotifyIcon) için. Global using eklenmez; WinForms türleri tam adla kullanılır. -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>icon\FWLauncherV2.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
+
+    <!-- Ürün kimliği (namespace/proje adı FWLauncherV2 olarak kalır). Exe: FireWingLauncher.exe,
+         veri klasörü: %AppData%\FireWingLauncher (eski PokeWingLauncher klasörü ilk açılışta taşınır). -->
+    <AssemblyName>FasterMCLauncher</AssemblyName>
+    <Product>FasterMC Launcher</Product>
+    <AssemblyTitle>FasterMC Launcher</AssemblyTitle>
+    <Company>FasterMC</Company>
+    <Authors>FasterMC</Authors>
+    <Copyright>© 2026 FasterMC. Tüm hakları saklıdır.</Copyright>
+    <Description>FasterMC Launcher</Description>
+    <NeutralLanguage>tr-TR</NeutralLanguage>
+    <Version>5.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="PokeWingLauncher.png" />
+    <None Remove="Assets\Images\*" />
+    <None Remove="Assets\Fonts\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Resource: hem uygulama ikonu hem de çalışma anında klasöre kopyalanabilsin diye gömülür -->
+    <Resource Include="icon\FWLauncherV2.ico" />
+    <Resource Include="PokeWingLauncher.png" />
+    <Resource Include="Assets\Images\*" />
+    <Resource Include="Assets\Fonts\Minecraftia-Regular.ttf" />
+    <Resource Include="Assets\Fonts\Minecrafter.Reg.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+    <PackageReference Include="CmlLib.Core" Version="4.0.5" />
+    <PackageReference Include="CmlLib.Core.Installer.Forge" Version="1.1.0" />
+    <PackageReference Include="CurseForge.APIClient" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" />
+    <PackageReference Include="System.Management" Version="9.0.10" />
+  </ItemGroup>
+
+  <!-- Gizli degerler: resmi derlemede Gizli.local.cs (git disi), acik kaynak derlemede Gizli.ornek.cs (bos) -->
+  <ItemGroup>
+    <Compile Remove="Gizli\**" />
+    <Compile Include="Gizli\Gizli.local.cs" Condition="Exists('Gizli\Gizli.local.cs')" />
+    <Compile Include="Gizli\Gizli.ornek.cs" Condition="!Exists('Gizli\Gizli.local.cs')" />
+  </ItemGroup>
+</Project>
